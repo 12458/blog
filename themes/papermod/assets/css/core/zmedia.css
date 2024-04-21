@@ -29,16 +29,18 @@
     }
 }
 
-/* footer */
-@media screen and (max-width: 900px) {
-    .list .top-link {
-        transform: translateY(-5rem);
+@media screen and (min-width: 768px) {
+    /* reset */
+    ::-webkit-scrollbar {
+        width: 19px;
+        height: 11px;
     }
 }
 
-@media screen and (max-width: 340px) {
-    .share-buttons {
-        justify-content: unset;
+/* footer */
+@media screen and (max-width: 900px) {
+    .list-page .top-link {
+        transform: translateY(-5rem);
     }
 }
 
@@ -46,6 +48,7 @@
     /* terms; profile-mode; post-single; post-entry; post-entry; search; search */
     .terms-tags a:active,
     .button:active,
+    .share-buttons svg:active,
     .post-entry:active,
     .top-link,
     #searchResults .focus,
