@@ -73,8 +73,8 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "Hi there \U0001F44B"
-    Content: Welcome to my blog
+    Title: "Hello! I'm Shang En"
+    Content: "I enjoy writing about technology, programming, and life. I'm a Computer Engineering major at Georgia Institute of Technology. I'm passionate about technology and I love to learn new things. I'm always looking for new opportunities to grow and improve myself. I hope you enjoy reading my blog!"
 
   socialIcons:
     - name: telegram
@@ -83,6 +83,8 @@ params:
       url: "https://github.com/12458/"
     - name: linkedin
       url: "https://www.linkedin.com/in/shangen/"
+    - name: mdi-resume
+      url: "https://go.shangen.org/cv"
     - name: Rss
       url: "index.xml"
 
