@@ -79,6 +79,8 @@ params:
       url: "https://t.me/shang3n"
     - name: github
       url: "https://github.com/12458/"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/shangen/"
     - name: Rss
       url: "index.xml"
 
