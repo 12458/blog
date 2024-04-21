@@ -189,7 +189,7 @@ with open("output.txt", "w") as f:
     f.write(output)
 ```
 
-## Verilog
+## Verilog Count
 
 We are asked to write a Verilog program for the Icarus Verilog simulator. We are not allowed to use conditionals (`if`, `else`) and addition (`+`) or ternary operators (`?`).
 
