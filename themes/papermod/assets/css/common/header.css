@@ -7,8 +7,12 @@
     margin-inline-end: auto;
     line-height: var(--header-height);
 }
+.nav ul {
+    margin: 0;
+    padding: 0;
+}
 
-.nav a {
+.logo a {
     display: block;
 }
 
@@ -27,13 +31,19 @@
     font-weight: 700;
 }
 
-.logo a img, .logo a svg {
+.logo a img,
+.logo a svg {
     display: inline;
     vertical-align: middle;
     pointer-events: none;
     transform: translate(0, -10%);
     border-radius: 6px;
     margin-inline-end: 8px;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+#theme-toggle svg {
+    height: 18px;
 }
 
 button#theme-toggle {
@@ -63,11 +73,32 @@ body:not(.dark) #sun {
 
 #menu a {
     font-size: 16px;
+    font-weight: 500;
+    color: var(--secondary);
+    display: inline-block;
+    line-height: 1.5em;
+}
+#menu a:hover {
+    color: var(--primary);
 }
 
+#menu a.active:hover {
+    color: var(--signature);
+}
 #menu .active {
-    font-weight: 500;
-    border-bottom: 2px solid currentColor;
+    color: var(--signature);
+    box-shadow: 0 2px 0 var(--signature);
+}
+
+#menu .external-link {
+    position: relative;
+}
+#menu .external-link svg {
+    width: 13px;
+    height: auto;
+    position: relative;
+    top: 1px;
+    margin-left: 3px;
 }
 
 .lang-switch li,

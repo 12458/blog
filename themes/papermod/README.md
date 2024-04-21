@@ -1,106 +1,138 @@
-<h1 align=center>Hugo PaperMod | <a href="https://adityatelange.github.io/hugo-PaperMod/" rel="nofollow">Demo</a></h1>
+# PaperModX
 
-<h4 align=center>☄️ Fast | ☁️ Fluent | 🌙 Smooth | 📱 Responsive</h4>
-<br>
+PaperModX is a forked version of [PaperMod](https://github.com/adityatelange/hugo-PaperMod),
+it aims at adding new features and improving code quality,
+makes it easier to read and modify by anyone with basic knowledge of Hugo and HTML.
 
-> Hugo PaperMod is a theme based on [hugo-paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3).<br>
-> The goal of this project is to add more features and customization to the og theme.
+Features and changes:
+- Table of Contents (ToC) floating on the side
+- InstantClick integration
+- Social icons from [Simple Icons](https://simpleicons.org/)
+- Opinionated UI enhancements
 
-**Documentation** can be found here: [**📚 Wiki**](https://github.com/adityatelange/hugo-PaperMod/wiki)
+## Getting started
 
-**ExampleSite** can be found here: [**exampleSite**](https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite). Demo is built up with [exampleSite](https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite) as source.
+You can use [reorx/papermodx-example](https://github.com/reorx/papermodx-example) as a boilerplate to create a new Hugo site with PaperModX theme. For detailed instructions please see the README of papermodx-example repo.
 
-[![hugo-papermod](https://img.shields.io/badge/Hugo--Themes-@PaperMod-blue)](https://themes.gohugo.io/themes/hugo-papermod/)
-[![Minimum Hugo Version](https://img.shields.io/static/v1?label=min-HUGO-version&message=>=v0.112.4&color=blue&logo=hugo)](https://github.com/gohugoio/hugo/releases/tag/v0.112.4)
-[![Discord](https://img.shields.io/discord/971046860317921340?label=Discord&logo=discord)](https://discord.gg/ahpmTvhVmp)
-[![GitHub](https://img.shields.io/github/license/adityatelange/hugo-PaperMod)](https://github.com/adityatelange/hugo-PaperMod/blob/master/LICENSE)
-![code-size](https://img.shields.io/github/languages/code-size/adityatelange/hugo-PaperMod)
-[![X (formerly Twitter) URL](https://img.shields.io/badge/-Share%20on%20X-gray?style=flat&logo=x)](https://x.com/intent/tweet/?text=Checkout%20Hugo%20PaperMod%20%E2%9C%A8%0AA%20fast,%20clean,%20responsive%20Hugo%20theme.&url=https://github.com/adityatelange/hugo-PaperMod&hashtags=Hugo,PaperMod)
+## Table of Contents (ToC) floating on the side
+
+By adding config:
+
+```yaml
+params:
+  TocSide: 'left'  # or 'right'
+```
+
+ToC will float on the left/right side of the page.
+You can take a look at how `'right'` feels like in [Installation | Update](https://reorx.github.io/hugo-PaperModX/docs/installation/).
+
+The ToC box is responsive, it only shows on the side when minimum screen size is 1440px.
+
+This feature is enabled on this site.
 
 
+## InstantClick integration
+
+By adding config:
+
+```yaml
+params:
+  EnableInstantClick: true
+```
+
+[InstantClick](http://instantclick.io/) will be enabled,
+making navigation behaves like Single Page Application.
+
+Note that `/search` pages are omitted from InstantClick
+to prevent conflicts from search's JavaScript,
+this may be changed in the future after refactoring those scripts.
+
+Another thing to notice is smooth scrolling will be disabled
+if InstantClick is enabled, because they both listen click
+event on every `<a>` tags. IMO smooth scrolling is not very useful
+so it has to give way to InstantCllick.
+
+This feature is enabled on this site.
+
+
+## Give links an accent color.
+
+Though PaperModX is designed to be minimal, accent color is still essential.
+It's a good way to show personality and make your site feels more delightful.
+
+The default color is a purple vibe,
+you can customize the colors of link, link underline and their hover variants
+by override the following css variables in `assets/css/extended/custom.css` of your site.
+
+```css
+:root {
+  --link-color: var(--primary);
+  --link-hover-color: #573eaa;
+  --link-underline-shadow: 0 1px 0 var(--link-color);
+  --link-hover-underline-color: #573eaa;
+  --link-hover-underline-shadow: 0 2px 0 var(--link-hover-underline-color);
+}
+```
+
+
+## Customize pagniator size
+
+In section pages, if you want the paginator size be different from the
+[global config](https://gohugo.io/templates/pagination/#configure-pagination),
+you can add `paginate` in the frontmatter to customize.
+
+```yaml
 ---
-
-<p align="center">
-  <kbd><img src="https://user-images.githubusercontent.com/21258296/114303440-bfc0ae80-9aeb-11eb-8cfa-48a4bb385a6d.png" alt="Mockup image" title="Mockup"/></kbd>
-</p>
-
+paginate: 10
 ---
+```
 
-## Features/Mods 💥
 
--   Uses Hugo's asset generator with pipelining, fingerprinting, bundling and minification by default.
--   3 Modes:
-    -   [Regular Mode.](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#regular-mode-default-mode)
-    -   [Home-Info Mode.](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#home-info-mode)
-    -   [Profile Mode.](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#profile-mode)
--   Table of Content Generation (newer implementation).
--   Archive of posts.
--   Social Icons (home-info and profile-mode).
--   Social-Media Share buttons on posts.
--   Menu location indicator.
--   Multilingual support. (with language selector).
--   Taxonomies.
--   Cover image for each post (with Responsive image support).
--   Light/Dark theme (automatic theme switch a/c to browser theme and theme-switch button).
--   SEO Friendly.
--   Multiple Author support.
--   Search Page with Fuse.js
--   Other Posts suggestion below a post
--   Breadcrumb Navigation.
--   Code Block Copy buttons.
--   Hugo's Chroma syntax highlighter.
--   No webpack, nodejs and other dependencies are required to edit the theme.
+## Menus external link
 
-Read Wiki For More Details => **[PaperMod - Features](https://github.com/adityatelange/hugo-PaperMod/wiki/Features)**
+You can add `external: true` to a menu item's params to mark it as an external link,
+this will add a small icon to the end, and make the link open in new tab when clicked.
 
----
+```yaml
+menu:
+  main:
+    - name: "@Author"
+      url: "https://reorx.com"
+      params:
+        external: true
+```
 
-## Install/Update 📥
 
-Read Wiki For More Details => **[PaperMod - Installation](https://github.com/adityatelange/hugo-PaperMod/wiki/Installation)**
+## Highlight code with Chroma, no bullshit
 
----
+PaperMod uses highlight.js to highlight code blocks.
+In PaperModX, we use Chroma which is the recommended way in Hugo's
+[official docs](https://gohugo.io/content-management/syntax-highlighting/#:~:text=Hugo%20uses%20Chroma%20as%20its%20code%20highlighter%3B%20it%20is%20built%20in%20Go%20and%20is%20really%2C%20really%20fast),
+thus changing theme is easily supported.
 
-## FAQs / How To's Guide 🙋
+By default the themes are `github` for light and `dracula` for dark,
+you can change it by adding `chroma-light.css` and `chroma-dark.css`
+in site's `assets/css/lib` directory.
 
-Read Wiki For More Details => **[PaperMod-FAQs](https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs)**
 
----
+## Social icons from Simple Icons
 
-## Social-Icons/Share-Icons 🖼️
+Add social icons with `-simple` suffix from [Simple Icons](https://simpleicons.org/).
 
-Read Wiki For More Details => **[PaperMod-Icons](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)**
+Available icons:
+- github-simple
+- rss-simple
+- telegram-simple
+- twitter-simple
+- pinboard-simple
 
----
+The icons are moved from `layouts/partials/svg.html` to `data/svg.toml`,
+makes it easier to maintain, it's now possible to have an index page
+to show all the icons, check it out at: [Icons Preview](https://reorx.github.io/hugo-PaperModX/docs/icons_preview/)
 
-## Release Changelog 📃
 
-Release ChangeLog has info about stuff added: **[Releases](https://github.com/adityatelange/hugo-PaperMod/releases)**
+## Opinionated UI enhancements
 
----
-
-## [Pagespeed Insights (100% ?)](https://pagespeed.web.dev/report?url=https://adityatelange.github.io/hugo-PaperMod/) 👀
-
----
-
-## Support 🫶
-
--   Star 🌟 this repository.
--   Help spread the word about PaperMod by sharing it on social media and recommending it to your friends. 🗣️
--   You can also sponsor 🏅 on [Github Sponsors](https://github.com/sponsors/adityatelange) / [Ko-Fi](https://ko-fi.com/adityatelange).
-
----
-
-## Special Thanks 🌟
-
--   [**Highlight.js**](https://github.com/highlightjs/highlight.js)
--   [**Fuse.js**](https://github.com/krisk/fuse)
--   [**Feather Icons**](https://github.com/feathericons/feather)
--   [**Simple Icons**](https://github.com/simple-icons/simple-icons)
--   **All Contributors and Supporters**
-
----
-
-## Stargazers over time 📈
-
-[![Stargazers over time](https://starchart.cc/adityatelange/hugo-PaperMod.svg?background=%23ffffff00&axis=%23858585&line=%236b63ff)](https://starchart.cc/adityatelange/hugo-PaperMod)
+- Distinguish home page width and post page width, post page is wider
+  (800px) for better readability, you can change it by `--post-width` in `theme-vars.css`.
+- Menu links are always bold, this feels more consistent when clicking around. Active links have deeper color.

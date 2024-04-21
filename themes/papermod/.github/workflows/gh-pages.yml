@@ -1,31 +1,15 @@
-name: Deploy Hugo PaperMod Demo to Pages
+# https://github.com/actions/starter-workflows/blob/main/pages/hugo.yml
+name: Deploy Hugo site to Pages
 
 on:
   push:
     paths-ignore:
-      - "images/**"
-      - "LICENSE"
       - "README.md"
     branches:
       - master
-      - exampleSite
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    # manual run
-    inputs:
-      hugoVersion:
-        description: "Hugo Version"
-        required: false
-        default: "0.112.4"
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
-# Default to bash
-defaults:
-  run:
-    shell: bash
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -33,37 +17,44 @@ permissions:
   pages: write
   id-token: write
 
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: ${{ github.event.inputs.hugoVersion || '0.112.4' }}
     steps:
-      - name: Install Hugo CLI
-        run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
-          ref: exampleSite
-      - name: Setup Pages
+          fetch-depth: 1
+
+      - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: Get Theme
-        run: git submodule update --init --recursive
-      - name: Update theme to Latest commit
-        run: git submodule update --remote --merge
-      - name: Build with Hugo
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build
         run: |
           hugo \
-            --buildDrafts --gc \
-            --baseURL ${{ steps.pages.outputs.base_url }}
+            --minify --verbose -D \
+            --buildFuture \
+            --environment production \
+            --themesDir ../.. --theme hugo-PaperModX \
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
+        working-directory: exampleSite
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v1
         with:
-          path: ./public
+          path: ./exampleSite/public
+
   # Deployment job
   deploy:
     environment:
@@ -74,4 +65,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v1

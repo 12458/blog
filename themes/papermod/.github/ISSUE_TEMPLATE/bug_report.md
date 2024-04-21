@@ -13,9 +13,6 @@ assignees: ''
 
 Please fill the template below
 - **DO NOT** ask for instructions.
-- Use Discussions section if you need help
-- See project wiki https://github.com/adityatelange/hugo-PaperMod/wiki
-- Read FAQs section https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs
 - Search for previous issues/ pull requests
 
 -->
@@ -26,7 +23,7 @@ Please fill the template below
  - Device/Os: [e.g. Android 10]
  - Type: [e.g. Desktop/Mobile]
  - Browser and version [e.g. Chrome 86.0]:
- - Hugo Version [ >=0.112.4 expected]:
+ - Hugo Version [ >=0.83.0 expected]:
  - Theme Version [e.g. v4.0, master, or commit-id ]:
 
 **Steps to reproduce the behavior:**
@@ -39,9 +36,6 @@ Please fill the template below
 
 **Expected behavior**:
 <!-- A clear and concise description of what you expected to happen. -->
-
-**Repo/Source where this issue can be reproduced**:
-<!-- Please link source code of website where the said issue can be reproduced -->
 
 **Screenshots**
 <!-- If applicable, add screenshots to help explain your problem. -->

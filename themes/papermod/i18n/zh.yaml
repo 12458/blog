@@ -10,7 +10,7 @@
     other: "{{ .Count }} 分钟"
 
 - id: words
-  translation: 
+  translation:
     one: "字"
     other: "{{ .Count }} 字"
 
@@ -18,7 +18,7 @@
   translation: "目录"
 
 - id: translations
-  translation: "语言"
+  translation: "其他语言"
 
 - id: home
   translation: "主页"
@@ -31,3 +31,6 @@
 
 - id: code_copied
   translation: "已复制！"
+
+- id: comments
+  translation: "评论"
