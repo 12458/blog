@@ -12,6 +12,8 @@ minify:
   disableXML: true
   minifyOutput: true
 
+copyright: "© 2024 [Sim Shang En](https://about.shangen.org)"
+
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Shang En's Blog
