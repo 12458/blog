@@ -2,7 +2,7 @@
 title: "Hello World"
 date: 2023-07-21T21:53:44+0800
 tags: ["hello"]
-author: "Shang En"
+author: "Shang En Sim"
 showToc: false
 TocOpen: false
 draft: false

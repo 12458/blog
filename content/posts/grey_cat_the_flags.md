@@ -2,7 +2,7 @@
 title: "Write-ups for Grey Cat the Flags CTF 2024"
 date: 2024-04-21T14:46:00+0800
 tags: ["writeups"]
-author: "Shang En"
+author: "Shang En Sim"
 showToc: false
 TocOpen: false
 draft: false
