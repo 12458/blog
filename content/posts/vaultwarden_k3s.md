@@ -5,7 +5,7 @@ tags: ["k3s", "vaultwarden", "kubernetes"]
 author: "Shang En Sim"
 showToc: false
 TocOpen: false
-draft: true
+draft: false
 hidemeta: false
 comments: true
 description: "How I Self-Hosted a Bitwarden-Compatible Password Manager on a $1/mo VPS"
