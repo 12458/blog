@@ -43,8 +43,8 @@ flowchart TD
     B --> C[VPS NodePort]
     C --> D[K3s Service]
     D --> E[Vaultwarden Pod]
-    E --> F[hostPath Storage<br/>/opt/vaultwarden-data]
-    E --> G[External Database<br/>(NeonDB PostgreSQL)]
+    E --> F["hostPath Storage<br/>/opt/vaultwarden-data"]
+    E --> G["External Database<br/>(NeonDB PostgreSQL)"]
 ```
 
 ## Storage
