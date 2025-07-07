@@ -7,7 +7,8 @@ showToc: false
 TocOpen: false
 draft: false
 hidemeta: false
-comments: true
+disableComments: false
+mermaid: true
 description: "How I Self-Hosted a Bitwarden-Compatible Password Manager on a $1/mo VPS"
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
