@@ -1,4 +1,4 @@
-baseURL: "https://blog.shangen.org/"
+baseURL: "https://blog.shangen.org"
 title: Shang En's Blog
 paginate: 5
 theme: papermod
