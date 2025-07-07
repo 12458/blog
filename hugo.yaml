@@ -36,14 +36,12 @@ params:
   UseHugoToc: true
   disableSpecial1stPost: false
   disableScrollToTop: false
-  comments: false
   disableComments: false
   giscusTheme: preferred_color_scheme
   hidemeta: false
   hideSummary: false
   showtoc: false
   tocopen: false
-  commentSystems: giscus
 
   # assets:
   #   # disableHLJS: true # to disable highlight.js
