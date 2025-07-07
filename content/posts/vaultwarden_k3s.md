@@ -14,6 +14,7 @@ ShowBreadCrumbs: true
 ShowPostNavLinks: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
+noComments: false
 ---
 
 ![Vaultwarden](/images/vaultwarden.png)
