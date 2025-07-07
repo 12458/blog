@@ -12,13 +12,13 @@ minify:
   disableXML: true
   minifyOutput: true
 
-copyright: "© 2024 [Sim Shang En](https://about.shangen.org)"
+copyright: "© 2025 [Sim Shang En](https://about.shangen.org)"
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Shang En's Blog
   description: "Shang En's Blog"
-  keywords: [Personal, Blog, Portfolio, PaperMod]
+  keywords: [Personal, Blog, Portfolio, Shang En, Georgia Tech, Computer Engineering]
   author: Shang En
   # author: ["Me", "You"] # multiple authors
   # images: ["<link or path of image for opengraph, twitter-cards>"]
