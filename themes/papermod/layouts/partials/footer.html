@@ -7,11 +7,8 @@
   {{- end -}}
   <span style="display: inline-block; margin-left: 1em;">
     <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
-  </span>
-  <span style="display: inline-block; margin-left: 1em;">
-    Powered by
-    <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-    <a href="https://github.com/reorx/hugo-PaperModX/" rel="noopener" target="_blank">PaperModX</a>
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+    <!-- Copyright (C) 2025 Shang En (sim@shangen.org) -->
   </span>
 </footer>
 {{- end }}
@@ -148,12 +145,6 @@
 <script src="{{ $instantclick.RelPermalink }}" data-no-instant {{- if site.Params.assets.disableFingerprinting
   }}integrity="{{ $instantclick.Data.Integrity }}" {{- end }}></script>
 <script data-no-instant>
-  // http://instantclick.io/scripts
-  // InstantClick.on('change', function(isInitialLoad) {
-  //   if (isInitialLoad) {
-  //     return;
-  //   }
-  // });
   InstantClick.init();
 </script>
 {{- end }}
