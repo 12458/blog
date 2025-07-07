@@ -16,7 +16,7 @@ ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 ---
 
-![Vaultwarden](/vaultwarden.png)
+![Vaultwarden](/images/vaultwarden.png)
 
 Running your own password manager allows you to control the security of your passwords.  Here is how I set up [Vaultwarden](https://github.com/dani-garcia/vaultwarden) (a Bitwarden-compatible server) on K3s, using just a budget VPS with 1 vCPU and 2GB RAM. Everything works smoothly, and the cost is about \$2 a month.
 
