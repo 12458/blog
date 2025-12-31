@@ -1,6 +1,6 @@
 ---
 title: "Integrating Georgia Tech SSO with CAS"
-date: 2026-01-01T12:00:00+00:00
+date: 2026-01-01T01:25:00+08:00
 tags: ["authentication", "cas", "sso", "georgia-tech", "security"]
 author: "Shang En Sim"
 showToc: true
