@@ -1,6 +1,6 @@
 <div class="tweet social-quote">
   <div class="title">
-    {{ safeHTML (index site.Data.svg "twitter-simple") }}
+    {{ safeHTML (index hugo.Data.svg "twitter-simple") }}
     {{ with .title }}<span>{{ . }}</span>{{ end }}
   </div>
 
@@ -8,6 +8,8 @@
   {{- $url := printf "https://twitter.com/%v/status/%v" .user .id -}}
   {{- $query := querify "url" $url "dnt" $dnt -}}
   {{- $request := printf "https://publish.twitter.com/oembed?%s" $query -}}
-  {{- $json := getJSON $request -}}
-  {{- replaceRE "<script.+/script>" "" $json.html | safeHTML -}}
+  {{- with resources.GetRemote $request -}}
+    {{- $json := .Content | transform.Unmarshal -}}
+    {{- replaceRE "<script.+/script>" "" $json.html | safeHTML -}}
+  {{- end -}}
 </div>
