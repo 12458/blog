@@ -2,7 +2,7 @@ export const SITE_TITLE = "Shang En's Blog";
 export const SITE_DESCRIPTION = "Shang En's Blog";
 
 export const NAV_LINKS = [
-	{ name: 'Home', url: 'https://shangen.org' },
+	{ name: 'Home', url: '/' },
 ];
 
 export const GISCUS_CONFIG = {
