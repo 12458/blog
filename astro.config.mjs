@@ -3,6 +3,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
+import cloudflare from '@astrojs/cloudflare';
 import remarkMath from 'remark-math';
 import rehypeMathjax from 'rehype-mathjax';
 import { defineConfig, fontProviders } from 'astro/config';
@@ -11,6 +12,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://shangen.org',
 	base: '/blog',
+	adapter: cloudflare(),
 	integrations: [mdx(), sitemap(), react()],
 	markdown: {
 		remarkPlugins: [remarkMath],
