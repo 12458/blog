@@ -13,6 +13,9 @@ export default defineConfig({
 	site: 'https://shangen.org',
 	base: '/blog',
 	adapter: cloudflare(),
+	image: {
+		format: 'avif',
+	},
 	integrations: [mdx(), sitemap(), react()],
 	markdown: {
 		remarkPlugins: [remarkMath],
