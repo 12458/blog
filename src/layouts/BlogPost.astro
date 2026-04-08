@@ -35,7 +35,7 @@ const { title, description, pubDate, updatedDate, mermaid, noComments } = Astro.
 			</article>
 			{!noComments && (
 				<section class="comments">
-					<GiscusComments client:visible />
+					<GiscusComments client:only="react" />
 				</section>
 			)}
 		</main>

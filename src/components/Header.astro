@@ -1,6 +1,5 @@
 ---
 import { SITE_TITLE, NAV_LINKS } from '@/consts';
-import ThemeToggle from '@/components/react/ThemeToggle.tsx';
 ---
 
 <header>
@@ -10,7 +9,6 @@ import ThemeToggle from '@/components/react/ThemeToggle.tsx';
 			{NAV_LINKS.map(({ name, url }) => (
 				<a href={url} class="nav-link">{name}</a>
 			))}
-			<ThemeToggle client:load />
 		</div>
 	</nav>
 </header>
