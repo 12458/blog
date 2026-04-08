@@ -11,5 +11,11 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"routes": [
+		{
+			"pattern": "blog.shangen.org",
+			"custom_domain": true
+		}
+	]
 }
