@@ -12,10 +12,8 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://shangen.org',
 	base: '/blog',
+	output: 'static',
 	adapter: cloudflare(),
-	image: {
-		format: 'avif',
-	},
 	integrations: [mdx(), sitemap(), react()],
 	markdown: {
 		remarkPlugins: [remarkMath],

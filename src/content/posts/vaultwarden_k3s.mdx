@@ -6,11 +6,11 @@ description: "How I Self-Hosted a Bitwarden-Compatible Password Manager on a $1/
 mermaid: true
 ---
 
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import Mermaid from '@/components/MermaidDiagram.astro';
 import vaultwarden from '@/assets/images/vaultwarden.png';
 
-<Image src={vaultwarden} alt="Vaultwarden" />
+<Picture src={vaultwarden} formats={['avif', 'webp']} alt="Vaultwarden" />
 
 Running your own password manager allows you to control the security of your passwords.  Here is how I set up [Vaultwarden](https://github.com/dani-garcia/vaultwarden) (a Bitwarden-compatible server) on K3s, using just a budget VPS with 1 vCPU and 2GB RAM. Everything works smoothly, and the cost is about $2 a month.
 
