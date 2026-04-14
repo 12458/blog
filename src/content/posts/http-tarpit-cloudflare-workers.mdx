@@ -3,13 +3,9 @@ title: "Building an HTTP Tarpit on Cloudflare Workers for $0"
 pubDate: 2026-04-13T21:00:00+00:00
 tags: ["cloudflare", "workers", "security", "tarpit"]
 description: "Trapping site enumerators with slow-drip fake credentials using ReadableStream and setTimeout"
-heroImage: ../../assets/images/getting-domain-enumerated.png
 ---
 
-import { Picture } from 'astro:assets';
-import enumerated from '@/assets/images/getting-domain-enumerated.png';
-
-<Picture src={enumerated} formats={['avif', 'webp']} alt="Cloudflare error logs showing scanner probes" />
+![Cloudflare error logs showing scanner probes](/blog/images/getting-domain-enumerated.png)
 
 If you've ever looked at your access logs, you've seen it. Bots hitting `/.env`, `/.git/config`, `/wp-login.php`, `/phpinfo.php`. Dozens of times a day. Every day. They're scanning the entire internet looking for leaked credentials or misconfigured servers.
 
