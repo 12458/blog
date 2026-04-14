@@ -1,0 +1,181 @@
+---
+title: "Building an HTTP Tarpit on Cloudflare Workers for $0"
+pubDate: 2026-04-13T21:00:00+00:00
+tags: ["cloudflare", "workers", "security", "tarpit"]
+description: "Trapping site enumerators with slow-drip fake credentials using ReadableStream and setTimeout"
+heroImage: ../../assets/images/getting-domain-enumerated.png
+---
+
+import { Picture } from 'astro:assets';
+import enumerated from '@/assets/images/getting-domain-enumerated.png';
+
+<Picture src={enumerated} formats={['avif', 'webp']} alt="Cloudflare error logs showing scanner probes" />
+
+If you've ever looked at your access logs, you've seen it. Bots hitting `/.env`, `/.git/config`, `/wp-login.php`, `/phpinfo.php`. Dozens of times a day. Every day. They're scanning the entire internet looking for leaked credentials or misconfigured servers.
+
+The normal response is a 404 and move on. But I thought, what if I gave them exactly what they wanted? Just... incredibly slowly?
+
+## What's a tarpit
+
+An HTTP tarpit accepts the connection, returns a `200 OK`, and starts streaming a response. Except the response comes at roughly 13 bytes per second. The scanner's HTTP client sits there, connection open, waiting for the download to finish.
+
+It never finishes.
+
+Here's the thing that makes this work on Cloudflare Workers: you only pay for CPU time. Sleeping is free. An `await new Promise(r => setTimeout(r, 1500))` consumes zero CPU. It just tells the runtime to wake you up later. Meanwhile the scanner is burning a connection slot, a thread, and memory for as long as it's willing to wait.
+
+## Four Web APIs, that's it
+
+I built the whole thing with:
+
+- [**`ReadableStream`**](https://developers.cloudflare.com/workers/runtime-apis/streams/readablestream/) - the response body. Its `start(controller)` callback can be async, which is the entire trick
+- **`setTimeout` / `Promise`** - the sleep. Zero CPU cost between ticks
+- **`TextEncoder`** - strings to `Uint8Array` for `controller.enqueue()`
+- **`Response`** - pass the stream as the body, omit `Content-Length`, and you get chunked transfer encoding. The client can never know when the body ends
+
+No special APIs. No WebSockets. No cron triggers.
+
+## The core loop
+
+The tarpit is its own Cloudflare Worker, connected to my main site via a service binding. Here's the stripped down version:
+
+```typescript
+const encoder = new TextEncoder();
+
+export default {
+  async fetch(request: Request): Promise<Response> {
+    const body = new ReadableStream({
+      async start(controller) {
+        try {
+          // generateChunks() is an infinite generator
+          for (const chunk of generateChunks()) {
+            const bytes = encoder.encode(chunk);
+            for (let i = 0; i < bytes.length; i += rand(1, 32)) {
+              const slice = bytes.slice(i, i + rand(1, 32));
+              controller.enqueue(slice);
+              // this is the whole trick. sleep 0.5-2s, costs nothing
+              await new Promise(r => setTimeout(r, rand(500, 2000)));
+            }
+          }
+        } catch {
+          // client disconnected - enqueue() throws
+        }
+        try { controller.close(); } catch {}
+      },
+    });
+
+    return new Response(body, {
+      headers: { "Content-Type": "text/plain" },
+      // no Content-Length = chunked transfer
+    });
+  },
+};
+```
+
+Scanner requests `/.env`, gets back what looks like a real `.env` file downloading very slowly. Bytes trickle in. `DATABASE_URL=postgres://admin:hunter2@...`. Their client keeps waiting.
+
+The generator is `while (true)`. It never completes. They're stuck until they give up or their timeout fires.
+
+## Making the bait convincing
+
+A tarpit that sends random garbage is easy to detect. A tarpit that sends format-appropriate content with realistic secrets? That wastes their time twice, because their tooling might flag the "findings" as real, and now someone has to triage it.
+
+The worker checks what path was requested and picks the right content generator:
+
+| Request path | Content-Type | What they see |
+|---|---|---|
+| `/.env` | `text/plain` | Env vars with API keys |
+| `/dump.sql` | `application/sql` | CREATE TABLE + INSERT statements |
+| `/config.yml` | `text/yaml` | Service configs with credentials |
+| `/api/v1/users` | `application/json` | User records with API keys |
+| `/wp-admin` | `text/html` | Directory listing with links to more tarpit paths |
+
+<video autoplay loop muted playsinline style={{width: '100%', borderRadius: '8px'}}>
+  <source src="/blog/videos/curl-shangen.org-env.mp4" type="video/mp4" />
+</video>
+<p style={{textAlign: 'center', fontSize: '0.875rem', color: '#6b7280'}}>curling the tarpit</p>
+
+### Honeytokens
+
+Every generator is seeded with fake credentials that match the real format. These aren't random strings, they're structurally valid tokens that will pass regex-based secret scanners:
+
+```
+OPENAI_API_KEY=sk-proj-Hn4kT9xLm2pQwR8yJ...
+ANTHROPIC_API_KEY=sk-ant-api03-Bx9mN4vK...
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG...
+STRIPE_SECRET_KEY=sk_live_51H7dK9mN2pL...
+GITHUB_TOKEN=ghp_x8Kn4mR9pL2wQ5tJ...
+SLACK_BOT_TOKEN=xoxb-123456789012-...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiI...
+SENDGRID_API_KEY=SG.nOde15FAKEbut-REAL...
+```
+
+The SQL generator spits out `INSERT INTO users (email, password_hash, api_key)` statements. The YAML one outputs service configs with nested credentials. The HTML one embeds secrets in comments (`<!-- DB_PASSWORD=... -->`) and links to more tarpit paths, so crawlers that follow links just dig themselves deeper.
+
+If they have automated secret detection, every "finding" needs human review. That's the real cost multiplier.
+
+## Who gets tarpitted
+
+In my main worker, before anything else happens:
+
+```typescript
+import { shouldTarpit } from "./tarpit-paths";
+
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+
+    if (
+      shouldTarpit(url.pathname) &&
+      !request.cf?.botManagement?.verifiedBot
+    ) {
+      return env.TARPIT.fetch(request);
+    }
+
+    // ... normal site handling
+  },
+};
+```
+
+`shouldTarpit()` is a regex list covering the usual scanner playbook. Dotfiles, WordPress paths, PHP probes, config files, debug endpoints, path traversal attempts. Basically everything in the screenshot at the top of this post.
+
+The important bit is `!request.cf?.botManagement?.verifiedBot`. I don't want to tarpit Googlebot. Cloudflare's bot management identifies verified bots server-side using IP/ASN verification, not User-Agent strings. So:
+
+- Googlebot requesting `/robots.txt`? Verified bot. Passes through normally.
+- Scanner spoofing a Googlebot User-Agent requesting `/.env`? Not actually from Google's infrastructure. Tarpitted.
+
+You can't spoof this. Cloudflare checks where the request actually comes from.
+
+## The architecture
+
+The tarpit is a separate Worker connected via a [service binding](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/):
+
+```jsonc
+// wrangler.jsonc
+{
+  "services": [
+    { "binding": "TARPIT", "service": "tarpit" }
+  ]
+}
+```
+
+`env.TARPIT.fetch(request)` is a zero-latency in-process call, no network hop. But the tarpit deploys independently with its own config. If something goes wrong with it, the main site doesn't care.
+
+## The numbers
+
+With the default settings (1-32 bytes per chunk, 0.5-2 second delays):
+
+- Average throughput: ~13 bytes/second
+- A 2KB "file" takes ~2.5 minutes
+- But the stream is infinite, so the scanner stays connected until their client's timeout fires
+
+Most HTTP clients default to 30-300 second timeouts. A scanner with a 5 minute timeout burns one connection slot for 5 full minutes, receiving maybe 4KB of very convincing fake credentials.
+
+My cost for that? A few milliseconds of CPU across a couple hundred `setTimeout` calls.
+
+## The cost
+
+Cloudflare Workers bills for CPU time, not wall-clock time. The tarpit spends 99.9% of its time asleep. A request that holds a connection open for 5 minutes uses maybe a few milliseconds of actual CPU, encoding some strings and calling `controller.enqueue()` a couple hundred times.
+
+The free tier gives you 10 million requests per month. Each scanner probe is one long-lived request, not thousands of fast ones. I genuinely cannot figure out how to make this cost money.
+
+Every site on the internet gets scanned. A 404 costs you a little and costs the scanner nothing. A slow stream of fake credentials costs you nothing and costs them a thread, a socket, and minutes of wall-clock time. Four Web APIs. An afternoon of work.
