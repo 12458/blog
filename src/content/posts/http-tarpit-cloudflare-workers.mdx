@@ -5,7 +5,10 @@ tags: ["cloudflare", "workers", "security", "tarpit"]
 description: "Trapping site enumerators with slow-drip fake credentials using ReadableStream and setTimeout"
 ---
 
-![Cloudflare error logs showing scanner probes](/blog/images/getting-domain-enumerated.png)
+import { Image } from 'astro:assets';
+import enumerated from '@/assets/images/getting-domain-enumerated.png';
+
+<Image src={enumerated} alt="Cloudflare error logs showing scanner probes" />
 
 If you've ever looked at your access logs, you've seen it. Bots hitting `/.env`, `/.git/config`, `/wp-login.php`, `/phpinfo.php`. Dozens of times a day. Every day. They're scanning the entire internet looking for leaked credentials or misconfigured servers.
 

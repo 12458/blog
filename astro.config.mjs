@@ -13,7 +13,7 @@ export default defineConfig({
 	site: 'https://shangen.org',
 	base: '/blog',
 	output: 'static',
-	adapter: cloudflare(),
+	adapter: cloudflare({ imageService: 'compile' }),
 	integrations: [mdx(), sitemap(), react()],
 	markdown: {
 		remarkPlugins: [remarkMath],
